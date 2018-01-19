@@ -13,8 +13,6 @@ networks:
 services:
     youtrack:
         image: newtoncodes/youtrack:2017.4
-        ports:
-            - 8881:80
         networks:
             - youtrack
         volumes:
