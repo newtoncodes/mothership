@@ -11,9 +11,10 @@ mkdir -p /etc/mothership/bookstack/vpn
 cp -f ${dir}/vhost.conf /etc/mothership/bookstack/vhost.conf
 cp -f ${dir}/stack.yml /etc/mothership/bookstack/stack.yml
 
-sed -i "s/{{DOMAIN}}/$domain/" /etc/mothership/bookstack/vhost.conf
-
 passwordBookstack=$(pwgen -1 32)
+
+sed -i "s/{{DOMAIN}}/$domain/" /etc/mothership/bookstack/vhost.conf
+sed -i "s/{{PASSWORD}}/$passwordBookstack/" /etc/mothership/bookstack/stack.yml
 
 docker volume create bookstack_uploads > /dev/null
 docker volume create bookstack_storage > /dev/null

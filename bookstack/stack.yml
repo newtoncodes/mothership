@@ -31,7 +31,7 @@ services:
             - bookstack
         environment:
             - DB_HOST=db
-            - DB_PASSWORD=parola123
+            - DB_PASSWORD={{PASSWORD}}
         volumes:
             - bookstack_uploads:/var/www/bookstack/public/uploads
             - bookstack_storage:/var/www/bookstack/public/storage
