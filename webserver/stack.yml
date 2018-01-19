@@ -1,0 +1,15 @@
+version: "3.3"
+
+networks:
+    mothership:
+        external: true
+
+services:
+    nginx:
+        image: newtoncodes/nginx
+        networks:
+            - mothership
+        volumes:
+            - /etc/mothership/vhosts:/etc/nginx/vhosts
+            - /etc/mothership/webserver.crt:/etc/nginx/cert.crt
+            - /etc/mothership/webserver.key:/etc/nginx/cert.key

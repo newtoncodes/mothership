@@ -7,14 +7,14 @@ volumes:
         external: true
 
 networks:
-    nextcloud:
+    mothership:
         external: true
 
 services:
-    db:
+    nextcloud_mysql:
         image: newtoncodes/mysql:5.7
         networks:
-            - nextcloud
+            - mothership
         volumes:
             - nextcloud_mysql:/var/lib/mysql
         deploy:
@@ -26,35 +26,14 @@ services:
     nextcloud:
         image: nextcloud:12
         networks:
-            - nextcloud
+            - mothership
         volumes:
             - nextcloud_data:/var/www/html
         environment:
-            - MYSQL_HOST=db
+            - MYSQL_HOST=nextcloud_mysql
             - MYSQL_PASSWORD={{PASSWORD}}
         deploy:
             replicas: 1
             placement:
                 constraints:
                     - node.role == manager
-
-    nginx:
-        image: newtoncodes/nginx
-        ports:
-            - 443:443
-            - 80:80
-        networks:
-            - nextcloud
-        volumes:
-            - /etc/mothership/nextcloud/vhost.conf:/etc/nginx/vhosts/default.conf
-            - /etc/mothership/nextcloud/cert.crt:/etc/nginx/cert.crt
-            - /etc/mothership/nextcloud/cert.key:/etc/nginx/cert.key
-
-    snet:
-        image: newtoncodes/snet:1.0.0
-        networks:
-            - nginx
-        environment:
-            - PORTS=80:nginx:80 443:nginx:443
-        volumes:
-            - /etc/mothership/nextcloud/vpn:/etc/snet

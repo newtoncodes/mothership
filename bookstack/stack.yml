@@ -9,14 +9,16 @@ volumes:
         external: true
 
 networks:
-    bookstack:
+    mothership:
         external: true
 
 services:
-    db:
+    mysql:
         image: newtoncodes/mysql:5.7
+        hostname:
+            - bookstack_mysql
         networks:
-            - bookstack
+            - mothership
         volumes:
             - bookstack_mysql:/var/lib/mysql
         deploy:
@@ -28,9 +30,9 @@ services:
     bookstack:
         image: newtoncodes/bookstack:0.19.0
         networks:
-            - bookstack
+            - mothership
         environment:
-            - DB_HOST=db
+            - DB_HOST=bookstack_mysql
             - DB_PASSWORD={{PASSWORD}}
         volumes:
             - bookstack_uploads:/var/www/bookstack/public/uploads
@@ -40,24 +42,3 @@ services:
             placement:
                 constraints:
                     - node.role == manager
-
-    nginx:
-        image: newtoncodes/nginx
-        ports:
-            - 443:443
-            - 80:80
-        networks:
-            - bookstack
-        volumes:
-            - /etc/mothership/bookstack/vhost.conf:/etc/nginx/vhosts/default.conf
-            - /etc/mothership/bookstack/cert.crt:/etc/nginx/cert.crt
-            - /etc/mothership/bookstack/cert.key:/etc/nginx/cert.key
-
-    snet:
-        image: newtoncodes/snet:1.0.0
-        networks:
-            - bookstack
-        environment:
-            - PORTS=80:bookstack:80 443:bookstack:443
-        volumes:
-            - /etc/mothership/bookstack/vpn:/etc/snet
