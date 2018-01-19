@@ -1,0 +1,44 @@
+version: "3.3"
+
+volumes:
+    bookstack_uploads:
+        external: true
+    bookstack_storage:
+        external: true
+    bookstack_mysql:
+        external: true
+
+networks:
+    bookstack:
+        external: true
+
+services:
+    db:
+        image: newtoncodes/mysql:5.7
+        networks:
+            - bookstack
+        volumes:
+            - bookstack_mysql:/var/lib/mysql
+        deploy:
+            replicas: 1
+            placement:
+                constraints:
+                    - node.role == manager
+
+    bookstack:
+        image: newtoncodes/bookstack:0.19.0
+        ports:
+            - 8880:80
+        networks:
+            - bookstack
+        environment:
+            - DB_HOST=db
+            - DB_PASSWORD=parola123
+        volumes:
+            - bookstack_uploads:/var/www/bookstack/public/uploads
+            - bookstack_storage:/var/www/bookstack/public/storage
+        deploy:
+            replicas: 1
+            placement:
+                constraints:
+                    - node.role == manager

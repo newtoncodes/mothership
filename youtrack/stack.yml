@@ -1,0 +1,26 @@
+version: "3.3"
+
+volumes:
+    youtrack_data:
+        external: true
+    youtrack_backup:
+        external: true
+
+networks:
+    youtrack:
+        external: true
+
+services:
+    youtrack:
+        image: newtoncodes/youtrack:2017.4
+        ports:
+            - 8881:80
+        networks:
+            - youtrack
+        volumes:
+            - youtrack_data:/opt/youtrack/data
+            - youtrack_backup:/opt/youtrack/backup
+        deploy:
+            placement:
+                constraints:
+                    - node.role == manager

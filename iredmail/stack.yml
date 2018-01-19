@@ -1,0 +1,31 @@
+version: "3.3"
+
+volumes:
+    iredmail_vmail:
+        external: true
+    iredmail_clamav:
+        external: true
+    iredmail_mysql:
+        external: true
+
+networks:
+    iredmail:
+        external: true
+
+services:
+    mail:
+        image: newtoncodes/iredmail:0.9.7
+        networks:
+            - iredmail
+        volumes:
+            - iredmail_vmail:/var/vmail
+            - iredmail_clamav:/var/lib/clamav
+            - iredmail_mysql:/var/lib/mysql
+        environment:
+            - SOGO_WORKERS=2
+            - DOMAIN=example.com
+            - HOSTNAME=mail
+        deploy:
+            placement:
+                constraints:
+                    - node.role == manager

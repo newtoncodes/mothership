@@ -1,0 +1,38 @@
+version: "3.3"
+
+volumes:
+    gitlab_config:
+        external: true
+    gitlab_log:
+        external: true
+    gitlab_data:
+        external: true
+
+networks:
+    gitlab:
+        external: true
+
+services:
+    gitlab:
+        image: gitlab/gitlab-ce:10.3.4-ce.0
+        networks:
+            - gitlab
+        ports:
+            - 443:443
+            - 80:80
+            - 22:22
+        volumes:
+            - gitlab_config:/etc/gitlab
+            - gitlab_log:/var/log/gitlab
+            - gitlab_data:/var/opt/gitlab
+        deploy:
+            mode: replicated
+            replicas: 1
+            placement:
+                constraints:
+                    - node.role == manager
+            resources:
+                limits:
+                    memory: 4096M
+                reservations:
+                    memory: 2048M
