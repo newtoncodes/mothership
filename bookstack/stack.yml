@@ -15,8 +15,7 @@ networks:
 services:
     mysql:
         image: newtoncodes/mysql:5.7
-        hostname:
-            - bookstack_mysql
+        hostname: bookstack_mysql
         networks:
             - mothership
         volumes:

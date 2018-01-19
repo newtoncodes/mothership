@@ -13,8 +13,7 @@ networks:
 services:
     mysql:
         image: newtoncodes/mysql:5.7
-        hostname:
-            - nextcloud_mysql
+        hostname: nextcloud_mysql
         networks:
             - mothership
         volumes:
