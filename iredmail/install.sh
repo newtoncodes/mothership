@@ -13,9 +13,6 @@ read domain;
 echo "Mail hostname: "
 read hostname;
 
-mkdir -p /etc/mothership/iredmail/vpn
-cp -f ${dir}/stack.yml /etc/mothership/iredmail/stack.yml
-
 sed -i "s/- DOMAIN=.*/- DOMAIN=$domain/" /etc/mothership/iredmail/stack.yml
 sed -i "s/- HOSTNAME=.*/- HOSTNAME=$hostname/" /etc/mothership/iredmail.yml
 
