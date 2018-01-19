@@ -13,8 +13,9 @@ cp -f ${dir}/stack.yml "/etc/mothership/webserver.yml"
 cp -f ${dir}/../src/start.sh "/usr/local/bin/mothership-webserver-start"
 cp -f ${dir}/../src/stop.sh "/usr/local/bin/mothership-webserver-stop"
 
-sed -i "s/##app##/webserver/" "/usr/local/bin/mothership-webserver-start"
-sed -i "s/##app##/webserver/" "/usr/local/bin/mothership-webserver-stop"
+sed -i "s/##app##/webserver/g" "/usr/local/bin/mothership-webserver-start"
+sed -i "s/##app##/webserver/g" "/usr/local/bin/mothership-webserver-stop"
 
 chmod +x "/usr/local/bin/mothership-webserver-start"
 chmod +x "/usr/local/bin/mothership-webserver-stop"
+

@@ -25,8 +25,8 @@ install() {
     cp -f ${dir}/start.sh "/usr/local/bin/mothership-$1-start"
     cp -f ${dir}/stop.sh "/usr/local/bin/mothership-$1-stop"
 
-    sed -i "s/##app##/$1/" "/usr/local/bin/mothership-$1-start"
-    sed -i "s/##app##/$1/" "/usr/local/bin/mothership-$1-stop"
+    sed -i "s/##app##/$1/g" "/usr/local/bin/mothership-$1-start"
+    sed -i "s/##app##/$1/g" "/usr/local/bin/mothership-$1-stop"
 
     chmod +x "/usr/local/bin/mothership-$1-start"
     chmod +x "/usr/local/bin/mothership-$1-stop"
