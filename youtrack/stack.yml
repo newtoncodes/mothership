@@ -39,6 +39,8 @@ services:
             - youtrack
         volumes:
             - /etc/mothership/youtrack/vhost.conf:/etc/nginx/vhosts/default.conf
+            - /etc/mothership/youtrack/cert.crt:/etc/nginx/cert.crt
+            - /etc/mothership/youtrack/cert.key:/etc/nginx/cert.key
 
     snet:
         image: newtoncodes/snet:1.0.0

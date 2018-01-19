@@ -30,8 +30,8 @@ services:
             - iredmail_mysql:/var/lib/mysql
         environment:
             - SOGO_WORKERS=2
-            - DOMAIN=example.com
-            - HOSTNAME=mail
+            - DOMAIN={{DOMAIN}}
+            - HOSTNAME={{HOSTNAME}}
         deploy:
             mode: replicated
             replicas: 1

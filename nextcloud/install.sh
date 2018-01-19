@@ -4,8 +4,14 @@ dir=$(cd $(dirname ${BASH_SOURCE[0]}) && pwd)
 
 set -e
 
+echo "Domain: "
+read domain;
+
 mkdir -p /etc/mothership/nextcloud/vpn
 cp -f ${dir}/vhost.conf /etc/mothership/nextcloud/vhost.conf
+cp -f ${dir}/stack.yml /etc/mothership/nextcloud/stack.yml
+
+sed -i "s/{{DOMAIN}}/$domain/" /etc/mothership/nextcloud/vhost.conf
 
 passwordNextcloud=$(pwgen -1 32)
 

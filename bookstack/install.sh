@@ -4,8 +4,14 @@ dir=$(cd $(dirname ${BASH_SOURCE[0]}) && pwd)
 
 set -e
 
+echo "Domain: "
+read domain;
+
 mkdir -p /etc/mothership/bookstack/vpn
 cp -f ${dir}/vhost.conf /etc/mothership/bookstack/vhost.conf
+cp -f ${dir}/stack.yml /etc/mothership/bookstack/stack.yml
+
+sed -i "s/{{DOMAIN}}/$domain/" /etc/mothership/bookstack/vhost.conf
 
 passwordBookstack=$(pwgen -1 32)
 

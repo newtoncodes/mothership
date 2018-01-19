@@ -50,6 +50,8 @@ services:
             - bookstack
         volumes:
             - /etc/mothership/bookstack/vhost.conf:/etc/nginx/vhosts/default.conf
+            - /etc/mothership/bookstack/cert.crt:/etc/nginx/cert.crt
+            - /etc/mothership/bookstack/cert.key:/etc/nginx/cert.key
 
     snet:
         image: newtoncodes/snet:1.0.0

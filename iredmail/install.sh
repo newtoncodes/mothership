@@ -4,13 +4,17 @@ dir=$(cd $(dirname ${BASH_SOURCE[0]}) && pwd)
 
 set -e
 
-mkdir -p /etc/mothership/bookstack/vpn
-
 echo "Domain: "
 read domain;
 
 echo "Hostname: "
 read hostname;
+
+mkdir -p /etc/mothership/iredmail/vpn
+cp -f ${dir}/stack.yml /etc/mothership/iredmail/stack.yml
+
+sed -i "s/- DOMAIN=.*/- DOMAIN=$domain/" /etc/mothership/iredmail/stack.yml
+sed -i "s/- HOSTNAME=.*/- HOSTNAME=$hostname/" /etc/mothership/iredmail/stack.yml
 
 MYSQL_ROOT_PASSWORD=$(pwgen -1 32)
 POSTMASTER_PASSWORD=$(pwgen -1 32)
@@ -32,7 +36,3 @@ docker run --privileged --rm -p 8881:80 -p 8882:443 \
            --name=iredmail_tmp lejmr/iredmail:mysql-latest
 
 id=$(docker ps | grep iredmail_tmp | awk '{print $1;}')
-
-sed -i "s/- DOMAIN=.*/- DOMAIN=$domain/" ${dir}/stack.yml
-sed -i "s/- HOSTNAME=.*/- HOSTNAME=$hostname/" ${dir}/stack.yml
-

@@ -44,6 +44,8 @@ services:
             - nextcloud
         volumes:
             - /etc/mothership/nextcloud/vhost.conf:/etc/nginx/vhosts/default.conf
+            - /etc/mothership/nextcloud/cert.crt:/etc/nginx/cert.crt
+            - /etc/mothership/nextcloud/cert.key:/etc/nginx/cert.key
 
     snet:
         image: newtoncodes/snet:1.0.0
