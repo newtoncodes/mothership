@@ -13,7 +13,7 @@ networks:
         external: true
 
 services:
-    mail:
+    iredmail:
         image: newtoncodes/iredmail:0.9.7
         networks:
             - iredmail
@@ -26,6 +26,13 @@ services:
             - DOMAIN=example.com
             - HOSTNAME=mail
         deploy:
+            mode: replicated
+            replicas: 1
             placement:
                 constraints:
                     - node.role == manager
+            resources:
+                limits:
+                    memory: 4096M
+                reservations:
+                    memory: 2048M
