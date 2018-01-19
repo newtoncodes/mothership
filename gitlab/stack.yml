@@ -1,26 +1,26 @@
 version: "3.3"
 
 volumes:
-    gitlab_config:
+    mothership_gitlab_config:
         external: true
-    gitlab_log:
+    mothership_gitlab_log:
         external: true
-    gitlab_data:
+    mothership_gitlab_data:
         external: true
 
 networks:
-    gitlab:
+    mothership:
         external: true
 
 services:
     gitlab:
         image: gitlab/gitlab-ce:10.3.4-ce.0
         networks:
-            - gitlab
+            - mothership
         volumes:
-            - gitlab_config:/etc/gitlab
-            - gitlab_log:/var/log/gitlab
-            - gitlab_data:/var/opt/gitlab
+            - mothership_gitlab_config:/etc/gitlab
+            - mothership_gitlab_log:/var/log/gitlab
+            - mothership_gitlab_data:/var/opt/gitlab
         deploy:
             mode: replicated
             replicas: 1
@@ -32,12 +32,3 @@ services:
                     memory: 4096M
                 reservations:
                     memory: 2048M
-
-    snet:
-        image: newtoncodes/snet:1.0.0
-        networks:
-            - gitlab
-        environment:
-            - PORTS=80:gitlab:80 443:gitlab:443 22:gitlab:22
-        volumes:
-            - /etc/mothership/gitlab/vpn:/etc/snet
