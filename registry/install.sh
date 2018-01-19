@@ -1,18 +1,12 @@
 #!/usr/bin/env bash
 
 dir=$(cd $(dirname ${BASH_SOURCE[0]}) && pwd)
+source ${dir}/../src/lib.sh
 
 set -e
 
-echo "Domain: "
-read domain;
-
-mkdir -p /etc/mothership/registry/vpn
-cp -f ${dir}/vhost.conf /etc/mothership/registry/vhost.conf
-cp -f ${dir}/stack.yml /etc/mothership/registry/stack.yml
-
-sed -i "s/{{DOMAIN}}/$domain/" /etc/mothership/registry/vhost.conf
+install registry
 
 
-docker volume create registry_data > /dev/null
-docker network create --attachable registry > /dev/null
+docker volume create mothership_registry_data > /dev/null
+

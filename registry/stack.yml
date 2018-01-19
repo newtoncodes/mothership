@@ -1,43 +1,22 @@
 version: "3.3"
 
 volumes:
-    registry_data:
+    mothership_registry_data:
         external: true
 
 networks:
-    registry:
+    mothership:
         external: true
 
 services:
     registry:
         image: registry:2
         networks:
-            - registry
+            - mothership
         volumes:
-            - registry_data:/var/lib/registry
+            - mothership_registry_data:/var/lib/registry
         deploy:
             replicas: 1
             placement:
                 constraints:
                     - node.role == manager
-
-    nginx:
-        image: newtoncodes/nginx
-        ports:
-            - 443:443
-            - 80:80
-        networks:
-            - registry
-        volumes:
-            - /etc/mothership/registry/vhost.conf:/etc/nginx/vhosts/default.conf
-            - /etc/mothership/registry/cert.crt:/etc/nginx/cert.crt
-            - /etc/mothership/registry/cert.key:/etc/nginx/cert.key
-
-    snet:
-        image: newtoncodes/snet:1.0.0
-        networks:
-            - nginx
-        environment:
-            - PORTS=80:nginx:80 443:nginx:443
-        volumes:
-            - /etc/mothership/registry/vpn:/etc/snet
