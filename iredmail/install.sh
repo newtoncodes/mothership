@@ -4,6 +4,8 @@ dir=$(cd $(dirname ${BASH_SOURCE[0]}) && pwd)
 
 set -e
 
+mkdir -p /etc/mothership/bookstack/vpn
+
 echo "Domain: "
 read domain;
 
@@ -16,7 +18,6 @@ POSTMASTER_PASSWORD=$(pwgen -1 32)
 docker volume create iredmail_vmail > /dev/null
 docker volume create iredmail_clamav > /dev/null
 docker volume create iredmail_mysql > /dev/null
-
 docker network create --attachable iredmail > /dev/null
 
 docker run --privileged --rm -p 8881:80 -p 8882:443 \

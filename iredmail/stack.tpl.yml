@@ -15,6 +15,13 @@ networks:
 services:
     iredmail:
         image: newtoncodes/iredmail:0.9.7
+        ports:
+            - 25:25
+            - 587:587
+            - 110:110
+            - 143:143
+            - 993:993
+            - 995:995
         networks:
             - iredmail
         volumes:
@@ -36,3 +43,12 @@ services:
                     memory: 4096M
                 reservations:
                     memory: 2048M
+
+    snet:
+        image: newtoncodes/snet:1.0.0
+        networks:
+            - iredmail
+        environment:
+            - PORTS=80:iredmail:80 443:iredmail:443
+        volumes:
+            - /etc/mothership/iredmail/vpn:/etc/snet
