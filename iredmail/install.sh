@@ -31,7 +31,7 @@ docker volume create iredmail_vmail > /dev/null
 docker volume create iredmail_clamav > /dev/null
 docker volume create iredmail_mysql > /dev/null
 
-docker run --privileged --rm -it -p 8881:80 -p 8882:443 \
+docker run --privileged --rm -p 8881:80 -p 8882:443 \
     -e "DOMAIN=$domain" \
     -e "HOSTNAME=$hostname" \
     -e "MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD" \
@@ -41,11 +41,7 @@ docker run --privileged --rm -it -p 8881:80 -p 8882:443 \
     -v iredmail_vmail:/var/vmail \
     -v iredmail_clamav:/var/lib/clamav \
     --name=iredmail_tmp \
-newtoncodes/iredmail:0.9.7
-
-
-echo "DONE"
-exit 0;
+newtoncodes/iredmail:0.9.7 &
 
 id=$(docker ps | grep iredmail_tmp | awk '{print $1;}')
 
@@ -70,8 +66,6 @@ fi
 
 echo "Iredmail is ready."
 
-#docker stop ${id} > /dev/null
-
 echo ""
 echo "Root: $MYSQL_ROOT_PASSWORD"
 echo "Postmaster: $POSTMASTER_PASSWORD"
@@ -79,3 +73,4 @@ echo ""
 
 docker logs ${id}
 docker exec -it ${id} /bin/bash
+docker stop ${id} > /dev/null
