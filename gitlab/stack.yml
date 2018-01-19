@@ -32,3 +32,12 @@ services:
                     memory: 4096M
                 reservations:
                     memory: 2048M
+
+    snet:
+        image: newtoncodes/snet:1.0.0
+        networks:
+            - gitlab
+        environment:
+            - PORTS=80:gitlab:80 443:gitlab:443 22:gitlab:22
+        volumes:
+            - /etc/mothership/gitlab/vpn:/etc/snet

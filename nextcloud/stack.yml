@@ -34,3 +34,22 @@ services:
             placement:
                 constraints:
                     - node.role == manager
+
+    nginx:
+        image: newtoncodes/nginx
+        ports:
+            - 443:443
+            - 80:80
+        networks:
+            - nextcloud
+        volumes:
+            - /etc/mothership/nextcloud/vhost.conf:/etc/nginx/vhosts/default.conf
+
+    snet:
+        image: newtoncodes/snet:1.0.0
+        networks:
+            - nginx
+        environment:
+            - PORTS=80:nginx:80 443:nginx:443
+        volumes:
+            - /etc/mothership/nextcloud/vpn:/etc/snet

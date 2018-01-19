@@ -1,7 +1,12 @@
 #!/usr/bin/env bash
 
-docker volume create gitlab_config
-docker volume create gitlab_log
-docker volume create gitlab_data
+dir=$(cd $(dirname ${BASH_SOURCE[0]}) && pwd)
 
-docker network create --attachable gitlab
+set -e
+
+mkdir -p /etc/mothership/bookstack/vpn
+
+docker volume create gitlab_config > /dev/null
+docker volume create gitlab_log > /dev/null
+docker volume create gitlab_data > /dev/null
+docker network create --attachable gitlab > /dev/null

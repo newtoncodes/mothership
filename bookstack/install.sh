@@ -1,13 +1,17 @@
 #!/usr/bin/env bash
 
+dir=$(cd $(dirname ${BASH_SOURCE[0]}) && pwd)
+
 set -e
+
+mkdir -p /etc/mothership/bookstack/vpn
+cp -f ${dir}/vhost.conf /etc/mothership/bookstack/vhost.conf
 
 passwordBookstack=$(pwgen -1 32)
 
 docker volume create bookstack_uploads > /dev/null
 docker volume create bookstack_storage > /dev/null
 docker volume create bookstack_mysql > /dev/null
-
 docker network create --attachable bookstack > /dev/null
 
 docker run --rm -d -v bookstack_mysql:/var/lib/mysql --name bookstack_mysql_run newtoncodes/mysql:5.7 > /dev/null

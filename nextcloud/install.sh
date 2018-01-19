@@ -1,12 +1,16 @@
 #!/usr/bin/env bash
 
+dir=$(cd $(dirname ${BASH_SOURCE[0]}) && pwd)
+
 set -e
+
+mkdir -p /etc/mothership/nextcloud/vpn
+cp -f ${dir}/vhost.conf /etc/mothership/nextcloud/vhost.conf
 
 passwordNextcloud=$(pwgen -1 32)
 
 docker volume create nextcloud_data > /dev/null
 docker volume create nextcloud_mysql > /dev/null
-
 docker network create --attachable nextcloud > /dev/null
 
 docker run --rm -d -v nextcloud_mysql:/var/lib/mysql --name nextcloud_mysql_run newtoncodes/mysql:5.7 > /dev/null

@@ -4,9 +4,15 @@ volumes:
     registry_data:
         external: true
 
+networks:
+    registry:
+        external: true
+
 services:
     registry:
         image: registry:2
+        networks:
+            - registry
         volumes:
             - registry_data:/var/lib/registry
         deploy:
@@ -14,3 +20,22 @@ services:
             placement:
                 constraints:
                     - node.role == manager
+
+    nginx:
+        image: newtoncodes/nginx
+        ports:
+            - 443:443
+            - 80:80
+        networks:
+            - registry
+        volumes:
+            - /etc/mothership/registry/vhost.conf:/etc/nginx/vhosts/default.conf
+
+    snet:
+        image: newtoncodes/snet:1.0.0
+        networks:
+            - nginx
+        environment:
+            - PORTS=80:nginx:80 443:nginx:443
+        volumes:
+            - /etc/mothership/registry/vpn:/etc/snet

@@ -29,3 +29,22 @@ services:
                     memory: 4096M
                 reservations:
                     memory: 2048M
+
+    nginx:
+        image: newtoncodes/nginx
+        ports:
+            - 443:443
+            - 80:80
+        networks:
+            - youtrack
+        volumes:
+            - /etc/mothership/youtrack/vhost.conf:/etc/nginx/vhosts/default.conf
+
+    snet:
+        image: newtoncodes/snet:1.0.0
+        networks:
+            - nginx
+        environment:
+            - PORTS=80:nginx:80 443:nginx:443
+        volumes:
+            - /etc/mothership/youtrack/vpn:/etc/snet
