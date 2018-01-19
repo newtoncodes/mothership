@@ -9,7 +9,7 @@ volumes:
         external: true
 
 networks:
-    iredmail:
+    mothership:
         external: true
 
 services:
@@ -23,7 +23,7 @@ services:
             - 993:993
             - 995:995
         networks:
-            - iredmail
+            - mothership
         volumes:
             - iredmail_vmail:/var/vmail
             - iredmail_clamav:/var/lib/clamav
@@ -43,12 +43,3 @@ services:
                     memory: 4096M
                 reservations:
                     memory: 2048M
-
-    snet:
-        image: newtoncodes/snet:1.0.0
-        networks:
-            - iredmail
-        environment:
-            - PORTS=80:iredmail:80 443:iredmail:443
-        volumes:
-            - /etc/mothership/iredmail/vpn:/etc/snet
