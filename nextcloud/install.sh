@@ -11,9 +11,10 @@ mkdir -p /etc/mothership/nextcloud/vpn
 cp -f ${dir}/vhost.conf /etc/mothership/nextcloud/vhost.conf
 cp -f ${dir}/stack.yml /etc/mothership/nextcloud/stack.yml
 
-sed -i "s/{{DOMAIN}}/$domain/" /etc/mothership/nextcloud/vhost.conf
-
 passwordNextcloud=$(pwgen -1 32)
+
+sed -i "s/{{DOMAIN}}/$domain/" /etc/mothership/nextcloud/vhost.conf
+sed -i "s/{{PASSWORD}}/$passwordNextcloud/" /etc/mothership/nextcloud/stack.yml
 
 docker volume create nextcloud_data > /dev/null
 docker volume create nextcloud_mysql > /dev/null

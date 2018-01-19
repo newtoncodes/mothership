@@ -29,6 +29,9 @@ services:
             - nextcloud
         volumes:
             - nextcloud_data:/var/www/html
+        environment:
+            - MYSQL_HOST=db
+            - MYSQL_PASSWORD={{PASSWORD}}
         deploy:
             replicas: 1
             placement:
