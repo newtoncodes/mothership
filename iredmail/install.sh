@@ -50,8 +50,8 @@ set +e
 echo "Iredmail init process in progress..."
 ready=
 
-for i in {40..0}; do
-    sleep 5
+for i in {200..0}; do
+    sleep 30
 
     if [ "$ready" != "" ]; then break; fi
 
