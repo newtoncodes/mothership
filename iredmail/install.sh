@@ -31,7 +31,7 @@ docker volume create iredmail_vmail > /dev/null
 docker volume create iredmail_clamav > /dev/null
 docker volume create iredmail_mysql > /dev/null
 
-docker run --privileged --rm -p 8881:80 -p 8882:443 \
+docker run --privileged --rm -d -p 8881:80 -p 8882:443 \
     -e "DOMAIN=$domain" \
     -e "HOSTNAME=$hostname" \
     -e "MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD" \
@@ -41,7 +41,7 @@ docker run --privileged --rm -p 8881:80 -p 8882:443 \
     -v iredmail_vmail:/var/vmail \
     -v iredmail_clamav:/var/lib/clamav \
     --name=iredmail_tmp \
-newtoncodes/iredmail:0.9.7 &
+newtoncodes/iredmail:0.9.7
 
 id=$(docker ps | grep iredmail_tmp | awk '{print $1;}')
 
@@ -55,7 +55,7 @@ for i in {40..0}; do
 
     if [ "$ready" != "" ]; then break; fi
 
-    ready=$(docker logs ${id} 2> /dev/null | grep "Self checking every 3600 seconds.")
+    ready=$(docker logs ${id} 2> /dev/null | grep "Iredmail is ready")
 done
 
 if [ "$i" = 0 ]; then
