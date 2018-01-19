@@ -10,11 +10,19 @@ mkdir -p /etc/mothership/vpn
 
 cp -f ${dir}/stack.yml "/etc/mothership/webserver.yml"
 
-cp -f ${dir}/../src/start.sh "/usr/local/bin/mothership-webserver-start"
-cp -f ${dir}/../src/stop.sh "/usr/local/bin/mothership-webserver-stop"
+echo "#!/usr/bin/env bash
 
-sed -i "s/##app##/webserver/g" "/usr/local/bin/mothership-webserver-start"
-sed -i "s/##app##/webserver/g" "/usr/local/bin/mothership-webserver-stop"
+dir=$(cd $(dirname ${BASH_SOURCE[0]}) && pwd)
+
+docker stack deploy --compose-file /etc/mothership/webserver.yml --with-registry-auth mothership_webserver
+" > /usr/local/bin/mothership-webserver-start
+
+echo "#!/usr/bin/env bash
+
+dir=$(cd $(dirname ${BASH_SOURCE[0]}) && pwd)
+
+docker stack rm mothership_webserver
+" > /usr/local/bin/mothership-webserver-stop
 
 chmod +x "/usr/local/bin/mothership-webserver-start"
 chmod +x "/usr/local/bin/mothership-webserver-stop"

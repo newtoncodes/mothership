@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-docker network create --attachable mothership
+docker network create --attachable -d overlay mothership
 
 mkdir -p /etc/mothership/templates
 mkdir -p /etc/mothership/vhosts
