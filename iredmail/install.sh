@@ -49,9 +49,19 @@ for i in {30..0}; do
     ready=$(docker logs ${id} 2> /dev/null | grep "Self checking every 3600 seconds.")
 done
 
+set +e
+
 if [ "$i" = 0 ]; then
+    docker stop ${id} > /dev/null
     echo >&2 "Iredmail init process failed."
     exit 1
 fi
 
 echo "Iredmail is ready."
+
+docker stop ${id} > /dev/null
+
+echo ""
+echo "Root: $MYSQL_ROOT_PASSWORD"
+echo "Postmaster: $POSTMASTER_PASSWORD"
+echo ""
