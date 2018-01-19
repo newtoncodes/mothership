@@ -11,9 +11,8 @@ networks:
         external: true
 
 services:
-    mysql:
+    nextcloud_mysql:
         image: newtoncodes/mysql:5.7
-        hostname: nextcloud_mysql
         networks:
             - mothership
         volumes:

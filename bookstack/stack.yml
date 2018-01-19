@@ -13,9 +13,8 @@ networks:
         external: true
 
 services:
-    mysql:
+    bookstack_mysql:
         image: newtoncodes/mysql:5.7
-        hostname: bookstack_mysql
         networks:
             - mothership
         volumes:
