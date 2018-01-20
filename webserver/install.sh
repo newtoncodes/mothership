@@ -10,9 +10,9 @@ mkdir -p /etc/mothership/vhosts-private
 mkdir -p /etc/mothership/vpn
 
 cp -f ${dir}/stack.yml "/etc/mothership/webserver.yml"
-cp -f ${dir}/vhost.conf "/etc/mothership/templates/webserver.conf"
-cp -f ${dir}/vhost.conf "/etc/mothership/vhosts-private/webserver.conf"
-cp -f ${dir}/vhost.conf "/etc/mothership/vhosts-public/webserver.conf"
+cp -f ${dir}/vhost.conf "/etc/mothership/templates/0-webserver.conf"
+cp -f ${dir}/vhost.conf "/etc/mothership/vhosts-private/0-webserver.conf"
+cp -f ${dir}/vhost.conf "/etc/mothership/vhosts-public/0-webserver.conf"
 
 echo "#!/usr/bin/env bash
 
