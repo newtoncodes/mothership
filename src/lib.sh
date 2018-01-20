@@ -20,7 +20,7 @@ install() {
     sed -i "s/{{DOMAIN}}/$domain/" "/etc/mothership/templates/$1.conf"
     sed -i "s/{{PASSWORD}}/$password/" "/etc/mothership/templates/$1.conf"
 
-    if [ "$public" = "" ]; then
+    if [ "$public" = "yes" ]; then
         touch "/etc/mothership/templates/$1.conf.public"
     fi
 
