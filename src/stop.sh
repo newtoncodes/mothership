@@ -5,9 +5,11 @@ dir=$(cd $(dirname ${BASH_SOURCE[0]}) && pwd)
 set -e
 
 docker stack rm mothership_##app##
-rm -rf /etc/mothership/vhosts/##app##.conf
 
 set +e
+
+rm -rf /etc/mothership/vhosts-public/##app##.conf
+rm -rf /etc/mothership/vhosts-private/##app##.conf
 
 mothership-webserver-stop
 mothership-webserver-start

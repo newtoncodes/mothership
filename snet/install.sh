@@ -21,7 +21,7 @@ docker run \
     --cap-add=NET_ADMIN \
     --device=/dev/net/tun \
     -v /etc/mothership/vpn:/etc/snet \
-    -e PORTS=80:nginx:80 443:nginx:443 22:gitlab:22
+    -e PORTS=80:nginx_private:80 443:nginx_private:443 22:gitlab:22
 newtoncodes/snet:1.0.0
 
 " > /usr/local/bin/mothership-snet-start

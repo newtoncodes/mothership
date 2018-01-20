@@ -8,13 +8,21 @@ install() {
     echo "Domain: "
     read domain;
 
+    echo "Public (yes/no; default: no): "
+    read public;
+
     mkdir -p /etc/mothership/templates
-    mkdir -p /etc/mothership/vhosts
+    mkdir -p /etc/mothership/vhosts-public
+    mkdir -p /etc/mothership/vhosts-private
     mkdir -p /etc/mothership/vpn
 
     cp -f ${dir}/../${1}/vhost.conf "/etc/mothership/templates/$1.conf"
     sed -i "s/{{DOMAIN}}/$domain/" "/etc/mothership/templates/$1.conf"
     sed -i "s/{{PASSWORD}}/$password/" "/etc/mothership/templates/$1.conf"
+
+    if [ "$public" = "" ]; then
+        touch "/etc/mothership/templates/$1.conf.public"
+    fi
 
     cp -f ${dir}/../${1}/stack.yml "/etc/mothership/$1.yml"
     sed -i "s/{{DOMAIN}}/$domain/" "/etc/mothership/$1.yml"

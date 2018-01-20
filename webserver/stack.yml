@@ -5,11 +5,23 @@ networks:
         external: true
 
 services:
-    nginx:
+    nginx_public:
+        image: newtoncodes/nginx
+        ports:
+            - 80:80
+            - 443:443
+        networks:
+            - mothership
+        volumes:
+            - /etc/mothership/vhosts-public:/etc/nginx/vhosts
+            - /etc/mothership/webserver.crt:/etc/nginx/cert.crt
+            - /etc/mothership/webserver.key:/etc/nginx/cert.key
+
+    nginx_private:
         image: newtoncodes/nginx
         networks:
             - mothership
         volumes:
-            - /etc/mothership/vhosts:/etc/nginx/vhosts
+            - /etc/mothership/vhosts-private:/etc/nginx/vhosts
             - /etc/mothership/webserver.crt:/etc/nginx/cert.crt
             - /etc/mothership/webserver.key:/etc/nginx/cert.key
