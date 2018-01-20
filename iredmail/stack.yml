@@ -1,11 +1,11 @@
 version: "3.3"
 
 volumes:
-    iredmail_vmail:
+    mothership_iredmail_vmail:
         external: true
-    iredmail_clamav:
+    mothership_iredmail_clamav:
         external: true
-    iredmail_mysql:
+    mothership_iredmail_mysql:
         external: true
 
 networks:
