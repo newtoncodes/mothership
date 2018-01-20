@@ -64,5 +64,4 @@ echo "Postmaster: $POSTMASTER_PASSWORD"
 echo ""
 
 docker logs ${id}
-docker exec -it ${id} /bin/bash
 docker stop ${id} > /dev/null
