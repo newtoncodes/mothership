@@ -15,6 +15,15 @@ services:
             - mothership
         volumes:
             - mothership_registry_data:/var/lib/registry
+            - /etc/mothership/registry-auth:/auth
+            - /etc/mothership/webserver.crt:/registry.crt
+            - /etc/mothership/webserver.key:/registry.key
+        environment:
+            - REGISTRY_HTTP_TLS_CERTIFICATE: /registry.crt
+            - REGISTRY_HTTP_TLS_KEY: /registry.key
+            - REGISTRY_AUTH: htpasswd
+            - REGISTRY_AUTH_HTPASSWD_PATH: /auth/htpasswd
+            - REGISTRY_AUTH_HTPASSWD_REALM: Registry Realm
         deploy:
             replicas: 1
             placement:
