@@ -58,10 +58,10 @@ fi
 
 echo "Iredmail started ok."
 
+docker logs ${id}
+docker stop ${id} > /dev/null
+
 echo ""
 echo "Root: $MYSQL_ROOT_PASSWORD"
 echo "Postmaster: $POSTMASTER_PASSWORD"
 echo ""
-
-docker logs ${id}
-docker stop ${id} > /dev/null
