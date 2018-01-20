@@ -25,9 +25,9 @@ services:
         networks:
             - mothership
         volumes:
-            - iredmail_vmail:/var/vmail
-            - iredmail_clamav:/var/lib/clamav
-            - iredmail_mysql:/var/lib/mysql
+            - mothership_iredmail_vmail:/var/vmail
+            - mothership_iredmail_clamav:/var/lib/clamav
+            - mothership_iredmail_mysql:/var/lib/mysql
         environment:
             - SOGO_WORKERS=2
             - DOMAIN={{DOMAIN}}
