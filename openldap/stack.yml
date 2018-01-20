@@ -1,19 +1,21 @@
 version: "3.3"
 
+networks:
+    mothership:
+        external: true
+
 services:
     openldap:
         image: osixia/openldap:1.1.11
-        container_name: openldap
+        networks:
+            - mothership
         environment:
             LDAP_LOG_LEVEL: "256"
             LDAP_ORGANISATION: "Example Inc."
             LDAP_DOMAIN: "example.org"
-            LDAP_BASE_DN: ""
             LDAP_ADMIN_PASSWORD: "admin"
             LDAP_CONFIG_PASSWORD: "config"
             LDAP_READONLY_USER: "false"
-            #LDAP_READONLY_USER_USERNAME: "readonly"
-            #LDAP_READONLY_USER_PASSWORD: "readonly"
             LDAP_RFC2307BIS_SCHEMA: "false"
             LDAP_BACKEND: "hdb"
             LDAP_TLS: "true"
@@ -43,11 +45,12 @@ services:
 
     phpldapadmin:
         image: osixia/phpldapadmin:latest
-        container_name: phpldapadmin
+        networks:
+            - mothership
         environment:
             PHPLDAPADMIN_LDAP_HOSTS: "openldap"
             PHPLDAPADMIN_HTTPS: "false"
         ports:
-            - "8080:80"
+            - 8080:80
         depends_on:
             - openldap
