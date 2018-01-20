@@ -30,4 +30,3 @@ docker stack rm mothership_webserver
 
 chmod +x "/usr/local/bin/mothership-webserver-start"
 chmod +x "/usr/local/bin/mothership-webserver-stop"
-

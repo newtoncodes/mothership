@@ -6,4 +6,5 @@ Configurations for:
 * Gitlab
 * Nextcloud
 * BookStack
+* Xwiki
 * Iredmail
