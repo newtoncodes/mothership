@@ -35,10 +35,10 @@ services:
             LDAP_SSL_HELPER_PREFIX: "ldap"
         tty: true
         stdin_open: true
-#        volumes:
-#            - /var/lib/ldap
-#            - /etc/ldap/slapd.d
-#            - /container/service/slapd/assets/certs/
+        volumes:
+            - /root/ldap1:/var/lib/ldap
+            - /root/ldap2:/etc/ldap/slapd.d
+            - /root/ldap3:/container/service/slapd/assets/certs/
         ports:
             - 389:389
             - 636:636
