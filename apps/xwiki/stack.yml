@@ -1,22 +1,23 @@
 version: "3.3"
 
 volumes:
-    mothership_xwiki_data:
+    xwiki_data:
         external: true
-    mothership_xwiki_mysql:
+    xwiki_mysql:
         external: true
 
 networks:
+    xwiki:
     mothership:
         external: true
 
 services:
-    xwiki_mysql:
+    mysql:
         image: newtoncodes/mysql:5.7
         networks:
-            - mothership
+            - xwiki
         volumes:
-            - mothership_xwiki_mysql:/var/lib/mysql
+            - xwiki_mysql:/var/lib/mysql
         deploy:
             replicas: 1
             placement:
@@ -26,14 +27,15 @@ services:
     xwiki:
         image: xwiki:9.11.1
         networks:
+            - xwiki
             - mothership
         environment:
             - DB_DATABASE=xwiki
             - DB_USER=xwiki
             - DB_PASSWORD={{PASSWORD}}
-            - DB_HOST=xwiki_mysql
+            - DB_HOST=mysql
         volumes:
-            - mothership_xwiki_data:/usr/local/xwiki
+            - xwiki_data:/usr/local/xwiki
         deploy:
             replicas: 1
             placement:

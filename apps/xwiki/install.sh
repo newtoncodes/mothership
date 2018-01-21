@@ -1,17 +1,17 @@
 #!/usr/bin/env bash
 
 dir=$(cd $(dirname ${BASH_SOURCE[0]}) && pwd)
-source ${dir}/../src/lib.sh
+source ${dir}/../../src/lib.sh
 
 set -e
 
 passwordXwiki=$(pwgen -1 32)
 install xwiki ${passwordXwiki}
 
-docker volume create mothership_xwiki_data > /dev/null
-docker volume create mothership_xwiki_mysql > /dev/null
+docker volume create xwiki_data > /dev/null
+docker volume create xwiki_mysql > /dev/null
 
-docker run --rm -d -v mothership_xwiki_mysql:/var/lib/mysql --name xwiki_mysql_run newtoncodes/mysql:5.7 > /dev/null
+docker run --rm -d -v xwiki_mysql:/var/lib/mysql --name xwiki_mysql_run newtoncodes/mysql:5.7 > /dev/null
 id=$(docker ps | grep xwiki_mysql_run | awk '{print $1;}')
 
 set +e

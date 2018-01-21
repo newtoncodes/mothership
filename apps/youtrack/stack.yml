@@ -1,9 +1,9 @@
 version: "3.3"
 
 volumes:
-    mothership_youtrack_data:
+    youtrack_data:
         external: true
-    mothership_youtrack_backup:
+    youtrack_backup:
         external: true
 
 networks:
@@ -16,8 +16,8 @@ services:
         networks:
             - mothership
         volumes:
-            - mothership_youtrack_data:/opt/youtrack/data
-            - mothership_youtrack_backup:/opt/youtrack/backup
+            - youtrack_data:/opt/youtrack/data
+            - youtrack_backup:/opt/youtrack/backup
         deploy:
             mode: replicated
             replicas: 1
