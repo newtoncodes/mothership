@@ -1,11 +1,11 @@
 version: "3.3"
 
 volumes:
-    mothership_iredmail_vmail:
+    iredmail_vmail:
         external: true
-    mothership_iredmail_clamav:
+    iredmail_clamav:
         external: true
-    mothership_iredmail_mysql:
+    iredmail_mysql:
         external: true
 
 networks:
@@ -25,9 +25,9 @@ services:
         networks:
             - mothership
         volumes:
-            - mothership_iredmail_vmail:/var/vmail
-            - mothership_iredmail_clamav:/var/lib/clamav
-            - mothership_iredmail_mysql:/var/lib/mysql
+            - iredmail_vmail:/var/vmail
+            - iredmail_clamav:/var/lib/clamav
+            - iredmail_mysql:/var/lib/mysql
         environment:
             - SOGO_WORKERS=2
             - DOMAIN={{DOMAIN}}

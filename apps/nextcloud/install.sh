@@ -1,17 +1,17 @@
 #!/usr/bin/env bash
 
 dir=$(cd $(dirname ${BASH_SOURCE[0]}) && pwd)
-source ${dir}/../src/lib.sh
+source ${dir}/../../src/lib.sh
 
 set -e
 
 passwordNextcloud=$(pwgen -1 32)
 install nextcloud ${passwordNextcloud}
 
-docker volume create mothership_nextcloud_data > /dev/null
-docker volume create mothership_nextcloud_mysql > /dev/null
+docker volume create nextcloud_data > /dev/null
+docker volume create nextcloud_mysql > /dev/null
 
-docker run --rm -d -v mothership_nextcloud_mysql:/var/lib/mysql --name nextcloud_mysql_run newtoncodes/mysql:5.7 > /dev/null
+docker run --rm -d -v nextcloud_mysql:/var/lib/mysql --name nextcloud_mysql_run newtoncodes/mysql:5.7 > /dev/null
 id=$(docker ps | grep nextcloud_mysql_run | awk '{print $1;}')
 
 set +e
