@@ -13,8 +13,8 @@ read domain;
 echo "Mail hostname: "
 read hostname;
 
-sed -i "s/- DOMAIN=.*/- DOMAIN=$domain/" /etc/mothership/iredmail.yml
-sed -i "s/- HOSTNAME=.*/- HOSTNAME=$hostname/" /etc/mothership/iredmail.yml
+sed -i "s/- DOMAIN=.*/- DOMAIN=$domain/" /etc/mothership/apps/iredmail.yml
+sed -i "s/- HOSTNAME=.*/- HOSTNAME=$hostname/" /etc/mothership/apps/iredmail.yml
 
 MYSQL_ROOT_PASSWORD=$(pwgen -1 32)
 POSTMASTER_PASSWORD=$(pwgen -1 32)
