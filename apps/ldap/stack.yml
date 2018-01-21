@@ -1,22 +1,25 @@
 version: "3.3"
 
+volumes:
+    ldap_config:
+        external: true
+    ldap_data:
+        external: true
+    ldap_certs:
+        external: true
+
 networks:
     mothership:
         external: true
 
-volumes:
-    mothership_openldap_config:
-        external: true
-    mothership_openldap_data:
-        external: true
-    mothership_openldap_certs:
-        external: true
-
 services:
-    openldap:
+    ldap:
         image: osixia/openldap:1.1.11
         networks:
             - mothership
+        ports:
+            - 389:389
+            - 636:636
         environment:
             LDAP_LOG_LEVEL: "256"
             LDAP_ORGANISATION: "{{DOMAIN}}"
@@ -44,16 +47,25 @@ services:
         tty: true
         stdin_open: true
         volumes:
-            - mothership_openldap_config:/etc/ldap/slapd.d
-            - mothership_openldap_data:/var/lib/ldap
-            - mothership_openldap_certs:/container/service/slapd/assets/certs/
+            - ldap_config:/etc/ldap/slapd.d
+            - ldap_data:/var/lib/ldap
+            - ldap_certs:/container/service/slapd/assets/certs
 
-    phpldapadmin:
-        image: osixia/phpldapadmin:latest
+    ldapadmin:
+        image: mwaeckerlin/lam
         networks:
             - mothership
-        environment:
-            PHPLDAPADMIN_LDAP_HOSTS: "openldap"
-            PHPLDAPADMIN_HTTPS: "false"
+        ports:
+            - 9090:80
         depends_on:
-            - openldap
+            - ldap
+
+#    phpldapadmin:
+#        image: osixia/phpldapadmin:latest
+#        networks:
+#            - mothership
+#        environment:
+#            PHPLDAPADMIN_LDAP_HOSTS: "ldap"
+#            PHPLDAPADMIN_HTTPS: "false"
+#        depends_on:
+#            - ldap
