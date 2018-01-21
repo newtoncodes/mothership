@@ -12,7 +12,7 @@ networks:
         external: true
 
 services:
-    nextcloud_mysql:
+    mysql:
         image: newtoncodes/mysql:5.7
         networks:
             - nextcloud
@@ -32,7 +32,7 @@ services:
         volumes:
             - nextcloud_data:/var/www/html
         environment:
-            - MYSQL_HOST=nextcloud_mysql
+            - MYSQL_HOST=mysql
             - MYSQL_PASSWORD={{PASSWORD}}
         deploy:
             replicas: 1
