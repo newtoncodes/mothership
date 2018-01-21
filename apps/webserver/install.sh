@@ -4,13 +4,14 @@ dir=$(cd $(dirname ${BASH_SOURCE[0]}) && pwd)
 
 set -e
 
-mkdir -p /etc/mothership/templates
+mkdir -p /etc/mothership/apps
+mkdir -p /etc/mothership/snet
+mkdir -p /etc/mothership/vhosts-tpl
 mkdir -p /etc/mothership/vhosts-public
 mkdir -p /etc/mothership/vhosts-private
-mkdir -p /etc/mothership/vpn
 
 cp -f ${dir}/stack.yml "/etc/mothership/apps/webserver.yml"
-cp -f ${dir}/vhost.conf "/etc/mothership/templates/00-default.conf"
+cp -f ${dir}/vhost.conf "/etc/mothership/vhosts-tpl/00-default.conf"
 cp -f ${dir}/vhost.conf "/etc/mothership/vhosts-private/00-default.conf"
 cp -f ${dir}/vhost.conf "/etc/mothership/vhosts-public/00-default.conf"
 
