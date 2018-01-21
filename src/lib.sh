@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-dir=$(cd $(dirname ${BASH_SOURCE[0]}) && pwd)
-
 checkCerts() {
     if [ ! -f "/etc/mothership/certs/ca.crt" ]; then
         echo "Place the following files in /etc/mothership/certs:"
@@ -31,6 +29,7 @@ checkCerts() {
 install() {
     checkCerts
 
+    local dir=$(cd $(dirname ${BASH_SOURCE[0]}) && pwd)
     local password="$2"
 
     echo "Domain: "
