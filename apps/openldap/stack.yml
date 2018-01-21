@@ -4,6 +4,14 @@ networks:
     mothership:
         external: true
 
+volumes:
+    mothership_openldap_config:
+        external: true
+    mothership_openldap_data:
+        external: true
+    mothership_openldap_certs:
+        external: true
+
 services:
     openldap:
         image: osixia/openldap:1.1.11
@@ -11,8 +19,8 @@ services:
             - mothership
         environment:
             LDAP_LOG_LEVEL: "256"
-            LDAP_ORGANISATION: "Example Inc."
-            LDAP_DOMAIN: "example.org"
+            LDAP_ORGANISATION: "{{DOMAIN}}"
+            LDAP_DOMAIN: "{{DOMAIN}}"
             LDAP_ADMIN_PASSWORD: "admin"
             LDAP_CONFIG_PASSWORD: "config"
             LDAP_READONLY_USER: "false"
@@ -36,12 +44,9 @@ services:
         tty: true
         stdin_open: true
         volumes:
-            - /root/ldap1:/var/lib/ldap
-            - /root/ldap2:/etc/ldap/slapd.d
-            - /root/ldap3:/container/service/slapd/assets/certs/
-        ports:
-            - 389:389
-            - 636:636
+            - mothership_openldap_config:/etc/ldap/slapd.d
+            - mothership_openldap_data:/var/lib/ldap
+            - mothership_openldap_certs:/container/service/slapd/assets/certs/
 
     phpldapadmin:
         image: osixia/phpldapadmin:latest
@@ -50,7 +55,5 @@ services:
         environment:
             PHPLDAPADMIN_LDAP_HOSTS: "openldap"
             PHPLDAPADMIN_HTTPS: "false"
-        ports:
-            - 8080:80
         depends_on:
             - openldap

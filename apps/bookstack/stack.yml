@@ -1,24 +1,25 @@
 version: "3.3"
 
 volumes:
-    mothership_bookstack_uploads:
+    bookstack_uploads:
         external: true
-    mothership_bookstack_storage:
+    bookstack_storage:
         external: true
-    mothership_bookstack_mysql:
+    bookstack_mysql:
         external: true
 
 networks:
+    bookstack:
     mothership:
         external: true
 
 services:
-    bookstack_mysql:
+    mysql:
         image: newtoncodes/mysql:5.7
         networks:
-            - mothership
+            - bookstack
         volumes:
-            - mothership_bookstack_mysql:/var/lib/mysql
+            - bookstack_mysql:/var/lib/mysql
         deploy:
             replicas: 1
             placement:
@@ -28,13 +29,14 @@ services:
     bookstack:
         image: newtoncodes/bookstack:0.19.0
         networks:
+            - bookstack
             - mothership
         environment:
-            - DB_HOST=bookstack_mysql
+            - DB_HOST=mysql
             - DB_PASSWORD={{PASSWORD}}
         volumes:
-            - mothership_bookstack_uploads:/var/www/bookstack/public/uploads
-            - mothership_bookstack_storage:/var/www/bookstack/public/storage
+            - bookstack_uploads:/var/www/bookstack/public/uploads
+            - bookstack_storage:/var/www/bookstack/public/storage
         deploy:
             replicas: 1
             placement:

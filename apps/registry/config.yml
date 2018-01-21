@@ -1,0 +1,27 @@
+version: 0.1
+log:
+    fields:
+        service: registry
+storage:
+    cache:
+        blobdescriptor: inmemory
+    filesystem:
+        rootdirectory: /var/lib/registry
+http:
+    addr: :5000
+    headers:
+        X-Content-Type-Options: [nosniff]
+    tls:
+        certificate: /certs/registry.crt
+        key: /certs/registry.key
+health:
+    storagedriver:
+        enabled: true
+        interval: 10s
+        threshold: 3
+auth:
+    token:
+        realm: "https://registry_auth:5001/auth"
+        service: "{{DOMAIN}}"
+        issuer: "Docker registry auth"
+        rootcertbundle: /certs/auth.crt

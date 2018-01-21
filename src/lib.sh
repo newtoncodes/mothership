@@ -16,7 +16,7 @@ install() {
     mkdir -p /etc/mothership/vhosts-private
     mkdir -p /etc/mothership/vpn
 
-    cp -f ${dir}/../${1}/vhost.conf "/etc/mothership/templates/$1.conf"
+    cp -f ${dir}/../apps/${1}/vhost.conf "/etc/mothership/templates/$1.conf"
     sed -i "s/{{DOMAIN}}/$domain/" "/etc/mothership/templates/$1.conf"
     sed -i "s/{{PASSWORD}}/$password/" "/etc/mothership/templates/$1.conf"
 
@@ -24,7 +24,7 @@ install() {
         touch "/etc/mothership/templates/$1.conf.public"
     fi
 
-    cp -f ${dir}/../${1}/stack.yml "/etc/mothership/$1.yml"
+    cp -f ${dir}/../apps/${1}/stack.yml "/etc/mothership/$1.yml"
     sed -i "s/{{DOMAIN}}/$domain/" "/etc/mothership/$1.yml"
     sed -i "s/{{PASSWORD}}/$password/" "/etc/mothership/$1.yml"
 
