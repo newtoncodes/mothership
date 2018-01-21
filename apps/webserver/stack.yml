@@ -14,8 +14,7 @@ services:
             - mothership
         volumes:
             - /etc/mothership/vhosts-public:/etc/nginx/vhosts
-            - /etc/mothership/webserver.crt:/etc/nginx/cert.crt
-            - /etc/mothership/webserver.key:/etc/nginx/cert.key
+            - /etc/mothership/certs:/etc/nginx/certs
 
     nginx_private:
         image: newtoncodes/nginx
@@ -23,5 +22,4 @@ services:
             - mothership
         volumes:
             - /etc/mothership/vhosts-private:/etc/nginx/vhosts
-            - /etc/mothership/webserver.crt:/etc/nginx/cert.crt
-            - /etc/mothership/webserver.key:/etc/nginx/cert.key
+            - /etc/mothership/certs:/etc/nginx/certs

@@ -8,11 +8,11 @@ set -e
 passwordBookstack=$(pwgen -1 32)
 install bookstack ${passwordBookstack}
 
-docker volume create mothership_bookstack_uploads > /dev/null
-docker volume create mothership_bookstack_storage > /dev/null
-docker volume create mothership_bookstack_mysql > /dev/null
+docker volume create bookstack_uploads > /dev/null
+docker volume create bookstack_storage > /dev/null
+docker volume create bookstack_mysql > /dev/null
 
-docker run --rm -d -v mothership_bookstack_mysql:/var/lib/mysql --name bookstack_mysql_run newtoncodes/mysql:5.7 > /dev/null
+docker run --rm -d -v bookstack_mysql:/var/lib/mysql --name bookstack_mysql_run newtoncodes/mysql:5.7 > /dev/null
 id=$(docker ps | grep bookstack_mysql_run | awk '{print $1;}')
 
 set +e

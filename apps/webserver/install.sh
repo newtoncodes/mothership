@@ -9,23 +9,19 @@ mkdir -p /etc/mothership/vhosts-public
 mkdir -p /etc/mothership/vhosts-private
 mkdir -p /etc/mothership/vpn
 
-cp -f ${dir}/stack.yml "/etc/mothership/webserver.yml"
-cp -f ${dir}/vhost.conf "/etc/mothership/templates/0-webserver.conf"
-cp -f ${dir}/vhost.conf "/etc/mothership/vhosts-private/0-webserver.conf"
-cp -f ${dir}/vhost.conf "/etc/mothership/vhosts-public/0-webserver.conf"
+cp -f ${dir}/stack.yml "/etc/mothership/apps/webserver.yml"
+cp -f ${dir}/vhost.conf "/etc/mothership/templates/00-default.conf"
+cp -f ${dir}/vhost.conf "/etc/mothership/vhosts-private/00-default.conf"
+cp -f ${dir}/vhost.conf "/etc/mothership/vhosts-public/00-default.conf"
 
 echo "#!/usr/bin/env bash
 
-dir=$(cd $(dirname ${BASH_SOURCE[0]}) && pwd)
-
-docker stack deploy --compose-file /etc/mothership/webserver.yml --with-registry-auth mothership_webserver
+docker stack deploy --compose-file /etc/mothership/apps/webserver.yml --with-registry-auth webserver
 " > /usr/local/bin/mothership-webserver-start
 
 echo "#!/usr/bin/env bash
 
-dir=$(cd $(dirname ${BASH_SOURCE[0]}) && pwd)
-
-docker stack rm mothership_webserver
+docker stack rm webserver
 " > /usr/local/bin/mothership-webserver-stop
 
 chmod +x "/usr/local/bin/mothership-webserver-start"
