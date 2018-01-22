@@ -32,12 +32,29 @@ docker run --rm -it -d \
     --name=ldap_admin_tmp \
 newtoncodes/ldap-account-manager:5.2
 
-id=$(docker ps | grep ldap_tmp | awk '{print $1;}')
+id=$(docker ps | grep ldap_admin_tmp | awk '{print $1;}')
 
-sleep 5
+set +e
+echo "Admin first start in progress..."
+ready=
+
+for i in {30..0}; do
+    sleep 10
+
+    if [ "$ready" != "" ]; then break; fi
+
+    ready=$(docker logs ${id} 2> /dev/null | grep "/usr/sbin/apache2 -D FOREGROUND")
+done
+
+if [ "$i" = 0 ]; then
+    docker stop ${id} > /dev/null
+    echo >&2 "Admin init process failed."
+    exit 1
+fi
+
+echo "Admin started ok."
+
 docker stop ${id} > /dev/null
-
-echo "Admin configured."
 
 
 exit 0;
