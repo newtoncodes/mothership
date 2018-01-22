@@ -53,6 +53,7 @@ install() {
 
     cp -f ${dir}/../apps/${1}/vhost.conf "/etc/mothership/vhosts-tpl/$1.conf"
     sed -i "s/{{DOMAIN}}/$domain/" "/etc/mothership/vhosts-tpl/$1.conf"
+    sed -i "s/{{DOMAIN2}}/$domain2/" "/etc/mothership/vhosts-tpl/$1.conf"
     sed -i "s/{{PASSWORD}}/$password/" "/etc/mothership/vhosts-tpl/$1.conf"
 
     if [ "$public" = "yes" ]; then
