@@ -4,7 +4,7 @@ dir=$(cd $(dirname ${BASH_SOURCE[0]}) && pwd)
 
 set -e
 
-docker stack rm mothership_##app##
+docker stack rm ##app##
 
 set +e
 

@@ -28,7 +28,7 @@ if [ ! -f "/etc/mothership/certs/server.key" ]; then
     exit 1;
 fi
 
-docker stack deploy --compose-file /etc/mothership/apps/##app##.yml --with-registry-auth mothership_##app##
+docker stack deploy --compose-file /etc/mothership/apps/##app##.yml --with-registry-auth ##app##
 cp -f /etc/mothership/vhosts-tpl/##app##.conf /etc/mothership/vhosts-private/##app##.conf
 
 if [ -f /etc/mothership/vhosts-tpl/##app##.conf.public ]; then
