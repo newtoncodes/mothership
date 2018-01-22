@@ -31,12 +31,11 @@ services:
 
     registry_auth:
         image: cesanta/docker_auth:1.3
-        ports:
-            - 5001:5001
         networks:
             - mothership
         volumes:
             - /etc/mothership/certs:/certs:ro
             - registry_auth_config:/config:ro
             - registry_auth_log:/logs:rw
-        command:  --v=2 --alsologtostderr /config/auth.ldap.yml
+        command: /config/auth.ldap.yml
+        # for debig: --v=2 --alsologtostderr /config/auth.ldap.yml
