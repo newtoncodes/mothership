@@ -13,9 +13,9 @@ read domain;
 echo "LDAP organization: "
 read org;
 
-docker volume create ldap_certs > /dev/null
-docker volume create ldap_config > /dev/null
-docker volume create ldap_data > /dev/null
+#docker volume create ldap_certs > /dev/null
+#docker volume create ldap_config > /dev/null
+#docker volume create ldap_data > /dev/null
 
 echo "
 dn: olcDatabase={1}hdb,cn=config
@@ -33,10 +33,10 @@ olcAccess: to * by self write by dn="cn=admin,dc=ldap,dc=newton,dc=codes" write 
 passwordAdmin=$(pwgen -1 32)
 passwordConfig=$(pwgen -1 32)
 
-docker run --privileged --rm -d -p 8881:80 -p 8882:443 \
+docker run --rm -it -d \
     -e "LDAP_LOG_LEVEL=256" \
-    -e "LDAP_ORGANISATION=$domain" \
-    -e "LDAP_DOMAIN=$org" \
+    -e "LDAP_ORGANISATION=$org" \
+    -e "LDAP_DOMAIN=$domain" \
     -e "LDAP_ADMIN_PASSWORD=$passwordAdmin" \
     -e "LDAP_CONFIG_PASSWORD=$passwordConfig" \
     -e "LDAP_READONLY_USER=false" \
@@ -54,9 +54,6 @@ docker run --privileged --rm -d -p 8881:80 -p 8882:443 \
     -e "KEEP_EXISTING_CONFIG=false" \
     -e "LDAP_REMOVE_CONFIG_AFTER_SETUP=true" \
     -e "LDAP_SSL_HELPER_PREFIX=ldap" \
-    -v ldap_config:/etc/ldap/slapd.d \
-    -v ldap_data:/var/lib/ldap \
-    -v ldap_certs:/container/service/slapd/assets/certs \
     --name=ldap_tmp \
 osixia/openldap:1.1.11
 
