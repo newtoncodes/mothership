@@ -1,0 +1,24 @@
+server:
+  addr: :5001
+  certificate: /certs/server.bundle.crt
+  key: /certs/server.key
+
+token:
+  service: "Docker registry"
+  issuer: "Acme auth server"
+  expiration: 900
+
+users:
+  # Password is specified as a BCrypt hash. Use `htpasswd -nB USERNAME` to generate.
+  "admin":
+    password: "$2y$05$LO.vzwpWC5LZGqThvEfznu8qhb5SGqvBSWY1J3yZ4AxtMRZ3kN5jC"  # badmin
+  "test":
+    password: "$2y$05$WuwBasGDAgr.QCbGIjKJaep4dhxeai9gNZdmBnQXqpKly57oNutya"  # 123
+
+acl:
+  - match: {account: "admin"}
+    actions: ["*"]
+    comment: "Admin has full access to everything."
+  - match: {account: "user"}
+    actions: ["pull"]
+    comment: "User \"user\" can pull stuff."

@@ -1,11 +1,13 @@
 version: "3.3"
 
 volumes:
-    mothership_registry_data:
+    registry_data:
         external: true
-    mothership_registry_certs:
+    registry_config:
         external: true
-    mothership_registry_config:
+    registry_auth_log:
+        external: true
+    registry_auth_config:
         external: true
 
 networks:
@@ -18,11 +20,23 @@ services:
         networks:
             - mothership
         volumes:
-            - mothership_registry_certs:/certs:ro
-            - mothership_registry_config:/etc/docker/registry:ro
-            - mothership_registry_data:/var/lib/registry
+            - /etc/mothership/certs:/certs:ro
+            - registry_config:/etc/docker/registry:ro
+            - registry_data:/var/lib/registry
         deploy:
             replicas: 1
             placement:
                 constraints:
                     - node.role == manager
+
+    registy_auth:
+        image: cesanta/docker_auth:1.x
+        ports:
+            - 5001:5001
+        links:
+            - ldap:ldap
+        volumes:
+            - /etc/mothership/certs:/certs:ro
+            - registry_auth_config:/config:ro
+            - registry_auth_log:/logs:rw
+        command: /auth_server -v=5 -alsologtostderr=true -log_dir=/logs /config/auth.simple.yml

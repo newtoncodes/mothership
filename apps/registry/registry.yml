@@ -12,8 +12,8 @@ http:
     headers:
         X-Content-Type-Options: [nosniff]
     tls:
-        certificate: /certs/registry.crt
-        key: /certs/registry.key
+        certificate: /certs/server.bundle.crt
+        key: /certs/server.key
 health:
     storagedriver:
         enabled: true
@@ -22,6 +22,6 @@ health:
 auth:
     token:
         realm: "https://registry_auth:5001/auth"
-        service: "{{DOMAIN}}"
-        issuer: "Docker registry auth"
-        rootcertbundle: /certs/auth.crt
+        service: "Docker registry"
+        issuer: "Acme auth server"
+        rootcertbundle: /certs/server.bundle.crt

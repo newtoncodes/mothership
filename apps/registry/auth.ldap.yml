@@ -1,0 +1,27 @@
+server:
+  addr: :5001
+  certificate: /certs/server.bundle.crt
+  key: /certs/server.key
+
+token:
+  service: "Docker registry"
+  issuer: "Acme auth server"
+  expiration: 900
+
+ldap_auth:
+  addr: ldap:389
+  # none, always, starttls
+  tls: starttls
+  # set to true to allow insecure tls
+  insecure_tls_skip_verify: true
+  # set this to specify the ca certificate path
+  ca_certificate: /certs/ca.crt
+  bind_dn: "cn=registry,ou=auth,dc=ldap,dc=newton,dc=codes"
+  bind_password_file: /bind-password.txt
+  base: ou=users,dc=ldap,dc=newton,dc=codes
+  filter: (uid=${account})
+
+acl:
+  - match:
+      account: /.+/
+actions: ['*']
