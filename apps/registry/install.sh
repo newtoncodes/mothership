@@ -7,6 +7,12 @@ set -e
 
 install registry
 
+echo "LDAP users dn: "
+read ldapUsersDn;
+
+echo "LDAP search dn: "
+read ldapSearchDn;
+
 #docker volume create registry_data > /dev/null
 #docker volume create registry_config > /dev/null
 #docker volume create registry_auth_config > /dev/null
@@ -16,13 +22,12 @@ cp ${dir}/registry.yml /var/lib/docker/volumes/registry_config/_data/config.yml
 cp ${dir}/auth.ldap.yml /var/lib/docker/volumes/registry_auth_config/_data/auth.ldap.yml
 cp ${dir}/auth.simple.yml /var/lib/docker/volumes/registry_auth_config/_data/auth.simple.yml
 
-#openssl req -newkey rsa:4096 -nodes -sha256 -keyout /tmp/auth.key -x509 -days 1500 -out /tmp/auth.crt
-#openssl req -newkey rsa:4096 -nodes -sha256 -keyout /tmp/registry.key -x509 -days 1500 -out /tmp/registry.crt
-#
-#cp /tmp/auth.crt /var/lib/docker/volumes/registry_auth_config/_data/auth.crt
-#cp /tmp/auth.key /var/lib/docker/volumes/registry_auth_config/_data/auth.key
-#
-#mv /tmp/auth.crt /var/lib/docker/volumes/registry_config/_data/auth.crt
-#mv /tmp/auth.key /var/lib/docker/volumes/registry_config/_data/auth.key
-#mv /tmp/registry.crt /var/lib/docker/volumes/registry_config/_data/registry.crt
-#mv /tmp/registry.key /var/lib/docker/volumes/registry_config/_data/registry.key
+sed -i "s/\{\{SEARCH_DN\}\}/$ldapSearchDn/" /var/lib/docker/volumes/registry_auth_config/_data/auth.ldap.yml
+sed -i "s/\{\{USERS_DN\}\}/$ldapUsersDn/" /var/lib/docker/volumes/registry_auth_config/_data/auth.ldap.yml
+
+ldapSearchPassword=$(pwgen -1 32)
+echo "$ldapSearchPassword" > /var/lib/docker/volumes/registry_auth_config/_data/bind-password.txt
+
+echo ""
+echo "Search dn password: $ldapSearchPassword"
+echo ""

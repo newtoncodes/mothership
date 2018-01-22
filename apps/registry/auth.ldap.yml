@@ -16,9 +16,9 @@ ldap_auth:
   insecure_tls_skip_verify: true
   # set this to specify the ca certificate path
   # ca_certificate:
-  bind_dn: "cn=registry,ou=auth,dc=ldap,dc=newton,dc=codes"
-  bind_password_file: /bind-password.txt
-  base: ou=users,dc=ldap,dc=newton,dc=codes
+  bind_dn: "{{SEARCH_DN}}"
+  bind_password_file: /config/bind-password.txt
+  base: "{{USERS_DN}}"
   filter: (uid=${account})
 
 acl:

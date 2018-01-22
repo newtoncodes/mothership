@@ -39,4 +39,4 @@ services:
             - /etc/mothership/certs:/certs:ro
             - registry_auth_config:/config:ro
             - registry_auth_log:/logs:rw
-        command:  --v=2 --alsologtostderr /config/auth.simple.yml
+        command:  --v=2 --alsologtostderr /config/auth.ldap.yml
