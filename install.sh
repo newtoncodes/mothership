@@ -30,6 +30,7 @@ newtoncodes/snet:1.0.0
 echo "#!/usr/bin/env bash
 
 docker stop \$(docker ps -aq --filter=name=mothership_snet)
+docker rm \$(docker ps -aq --filter=name=mothership_snet)
 " > /usr/local/bin/mothership-snet-stop
 
 chmod +x "/usr/local/bin/mothership-snet-start"
