@@ -1,7 +1,7 @@
 server:
   addr: :5001
-  certificate: /certs/server.bundle.crt
-  key: /certs/server.key
+  certificate: /config/auth.crt
+  key: /config/auth.key
 
 token:
   service: "Docker registry"
@@ -15,7 +15,7 @@ ldap_auth:
   # set to true to allow insecure tls
   insecure_tls_skip_verify: true
   # set this to specify the ca certificate path
-  ca_certificate: /certs/ca.crt
+  # ca_certificate:
   bind_dn: "cn=registry,ou=auth,dc=ldap,dc=newton,dc=codes"
   bind_password_file: /bind-password.txt
   base: ou=users,dc=ldap,dc=newton,dc=codes
