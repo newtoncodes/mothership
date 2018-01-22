@@ -7,6 +7,8 @@ set -e
 
 install ldap foo yes
 
+exit 0;
+
 echo "LDAP domain: $domain"
 
 echo "LDAP organization: "

@@ -31,7 +31,7 @@ install() {
 
     local dir=$(cd $(dirname ${BASH_SOURCE[0]}) && pwd)
     local password="$2"
-    local domain2=
+    domain2=
 
     echo "Domain: "
     read domain;
