@@ -22,6 +22,16 @@ ldap_auth:
   filter: (uid=${account})
 
 acl:
-  - match:
-      account: /.+/
-actions: ['*']
+  - match: {account: "admin"}
+    actions: ["*"]
+    comment: "Admin has full access to everything."
+  - match: {account: "/^(.+)@.*$/", name: "${account:1}/*"}
+    actions: ["*"]
+  - match: {account: "/.+/", name: "${account}/*"}
+    actions: ["*"]
+  - match: {account: "/.+/", name: "public/*"}
+    actions: ["*"]
+  - match: {account: "/.+/", name: "dev/*"}
+    actions: ["*"]
+  - match: {account: "/.+/"}
+    actions: ["pull"]
