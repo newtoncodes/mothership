@@ -7,6 +7,12 @@ set -e
 
 install ldap
 
+echo "LDAP domain: "
+read domain;
+
+echo "LDAP organization: "
+read org;
+
 docker volume create ldap_certs > /dev/null
 docker volume create ldap_config > /dev/null
 docker volume create ldap_data > /dev/null
@@ -23,12 +29,16 @@ olcAccess: to attrs=userPassword,shadowLastChange by self write by dn=\"cn=admin
 olcAccess: to * by self write by dn="cn=admin,dc=ldap,dc=newton,dc=codes" write by * none
 " > /tmp/tmp-change.ldif
 
+
+passwordAdmin=$(pwgen -1 32)
+passwordConfig=$(pwgen -1 32)
+
 docker run --privileged --rm -d -p 8881:80 -p 8882:443 \
     -e "LDAP_LOG_LEVEL=256" \
     -e "LDAP_ORGANISATION=$domain" \
-    -e "LDAP_DOMAIN=$domain" \
-    -e "LDAP_ADMIN_PASSWORD=admin" \
-    -e "LDAP_CONFIG_PASSWORD=config" \
+    -e "LDAP_DOMAIN=$org" \
+    -e "LDAP_ADMIN_PASSWORD=$passwordAdmin" \
+    -e "LDAP_CONFIG_PASSWORD=$passwordConfig" \
     -e "LDAP_READONLY_USER=false" \
     -e "LDAP_RFC2307BIS_SCHEMA=false" \
     -e "LDAP_BACKEND=hdb" \
@@ -50,15 +60,19 @@ docker run --privileged --rm -d -p 8881:80 -p 8882:443 \
     --name=ldap_tmp \
 osixia/openldap:1.1.11
 
-id=$(docker ps | grep iredmail_tmp | awk '{print $1;}')
+id=$(docker ps | grep ldap_tmp | awk '{print $1;}')
 
-docker cp /tmp/tmp-change.ldif ${id}:/tmp-change.ldif
+docker cp /tmp/tmp-change.ldif ldap_tmp:/tmp-change.ldif
 
 echo "File copied"
 echo "Tmp id: $id"
 
-docker exec -it ${id} ldapmodify -Y EXTERNAL -H ldapi:/// -f /tmp/t2.ldif
+docker exec -it ${id} ldapmodify -Y EXTERNAL -H ldapi:/// -f /tmp-change.ldif
 docker exec -it ${id} ldapsearch -Y EXTERNAL -H ldapi:/// -b cn=config 'olcDatabase={0}hdb'
 
+docker stop ${id} > /dev/null
+
 echo ""
-echo "LDAP is ready."
+echo "Admin: $passwordAdmin"
+echo "Config: $passwordConfig"
+echo ""
