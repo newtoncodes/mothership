@@ -7,15 +7,15 @@ set -e
 
 install ldap
 
-echo "LDAP domain: "
-read domain;
+echo "LDAP domain: $domain"
 
 echo "LDAP organization: "
 read org;
 
-#docker volume create ldap_certs > /dev/null
-#docker volume create ldap_config > /dev/null
-#docker volume create ldap_data > /dev/null
+docker volume create ldap_certs > /dev/null
+docker volume create ldap_config > /dev/null
+docker volume create ldap_data > /dev/null
+docker volume create ldap_admin > /dev/null
 
 echo "
 dn: olcDatabase={1}hdb,cn=config
@@ -28,7 +28,6 @@ olcAccess: to dn.subtree=\"ou=users,dc=ldap,dc=newton,dc=codes\" by dn.subtree=\
 olcAccess: to attrs=userPassword,shadowLastChange by self write by dn=\"cn=admin,dc=ldap,dc=newton,dc=codes\" write by anonymous auth by * none
 olcAccess: to * by self write by dn="cn=admin,dc=ldap,dc=newton,dc=codes" write by * none
 " > /tmp/tmp-change.ldif
-
 
 passwordAdmin=$(pwgen -1 32)
 passwordConfig=$(pwgen -1 32)

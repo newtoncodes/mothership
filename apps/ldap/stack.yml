@@ -7,6 +7,8 @@ volumes:
         external: true
     ldap_certs:
         external: true
+    ldap_admin:
+        external: true
 
 networks:
     mothership:
@@ -52,20 +54,10 @@ services:
             - ldap_certs:/container/service/slapd/assets/certs
 
     ldapadmin:
-        image: mwaeckerlin/lam
+        image: newtoncodes/ldap-account-manager:5.2
         networks:
             - mothership
-        ports:
-            - 9090:80
+        volumes:
+            - ldap_admin:/var/lib/ldap-account-manager
         depends_on:
             - ldap
-
-#    phpldapadmin:
-#        image: osixia/phpldapadmin:latest
-#        networks:
-#            - mothership
-#        environment:
-#            PHPLDAPADMIN_LDAP_HOSTS: "ldap"
-#            PHPLDAPADMIN_HTTPS: "false"
-#        depends_on:
-#            - ldap
