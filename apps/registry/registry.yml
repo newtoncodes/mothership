@@ -21,7 +21,7 @@ health:
         threshold: 3
 auth:
     token:
-        realm: "https://registry_auth:5001/auth"
+        realm: "https://docker.newton.codes:5001/auth"
         service: "Docker registry"
         issuer: "Acme auth server"
-        rootcertbundle: /etc/docker/registry/auth.crt
+        rootcertbundle: /etc/docker/registry/server.bundle.crt
