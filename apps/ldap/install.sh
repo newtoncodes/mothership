@@ -12,6 +12,22 @@ echo "LDAP domain: $domain"
 echo "LDAP organization: "
 read org;
 
+echo "LDAP users dn: "
+read ldapUsersDn;
+
+echo "LDAP search dn: "
+read ldapSearchDn;
+
+ldapSearchPassword=$(pwgen -1 32)
+
+sed -i "s/- LDAP_ORG=.*/- LDAP_ORG=$org/" /etc/mothership/apps/ldap.yml
+sed -i "s/- DOMAIN=.*/- DOMAIN=$domain/" /etc/mothership/apps/ldap.yml
+sed -i "s/- LDAP_USERS_DN=.*/- LDAP_USERS_DN=$ldapUsersDn/" /etc/mothership/apps/ldap.yml
+sed -i "s/- LDAP_SEARCH_DN=.*/- LDAP_SEARCH_DN=$ldapSearchDn/" /etc/mothership/apps/ldap.yml
+sed -i "s/- LDAP_SEARCH_PASSWORD=.*/- LDAP_SEARCH_PASSWORD=$ldapSearchPassword/" /etc/mothership/apps/ldap.yml
+
+exit 0;
+
 docker volume create ldap_certs > /dev/null
 docker volume create ldap_config > /dev/null
 docker volume create ldap_data > /dev/null
