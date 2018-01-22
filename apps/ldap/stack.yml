@@ -57,14 +57,6 @@ services:
         image: newtoncodes/ldap-account-manager:5.2
         networks:
             - mothership
-        environment:
-            - LDAP_ORG={{ORG}}
-            - LDAP_DOMAIN={{DOMAIN}}
-            - LDAP_HOST=ldap
-            - LDAP_PORT=389
-            - LDAP_USERS_DN={{LDAP_USERS_DN}}
-            - LDAP_SEARCH_DN={{LDAP_SEARCH_DN}}
-            - LDAP_SEARCH_PASSWORD={{LDAP_SEARCH_PASSWORD}}
         volumes:
             - ldap_admin:/var/lib/ldap-account-manager
         depends_on:

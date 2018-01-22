@@ -20,11 +20,25 @@ read ldapSearchDn;
 
 ldapSearchPassword=$(pwgen -1 32)
 
-sed -i "s/- LDAP_ORG=.*/- LDAP_ORG=$org/" /etc/mothership/apps/ldap.yml
-sed -i "s/- DOMAIN=.*/- DOMAIN=$domain/" /etc/mothership/apps/ldap.yml
-sed -i "s/- LDAP_USERS_DN=.*/- LDAP_USERS_DN=$ldapUsersDn/" /etc/mothership/apps/ldap.yml
-sed -i "s/- LDAP_SEARCH_DN=.*/- LDAP_SEARCH_DN=$ldapSearchDn/" /etc/mothership/apps/ldap.yml
-sed -i "s/- LDAP_SEARCH_PASSWORD=.*/- LDAP_SEARCH_PASSWORD=$ldapSearchPassword/" /etc/mothership/apps/ldap.yml
+docker run --rm -it -d \
+    -e "LDAP_ORG=$org" \
+    -e "LDAP_DOMAIN=$domain" \
+    -e "LDAP_HOST=ldap" \
+    -e "LDAP_PORT=389" \
+    -e "LDAP_USERS_DN=$ldapUsersDn" \
+    -e "LDAP_SEARCH_DN=$ldapSearchDn" \
+    -e "LDAP_SEARCH_PASSWORD=$ldapSearchPassword" \
+    -v ldap_admin:/var/lib/ldap-account-manager \
+    --name=ldap_admin_tmp \
+newtoncodes/ldap-account-manager:5.2
+
+id=$(docker ps | grep ldap_tmp | awk '{print $1;}')
+
+sleep 5
+docker stop ${id} > /dev/null
+
+echo "Admin configured."
+
 
 exit 0;
 
