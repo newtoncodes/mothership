@@ -1,7 +1,7 @@
 server:
   addr: :5001
-  certificate: /config/server.bundle.crt
-  key: /config/server.key
+  certificate: /certs/server.bundle.crt
+  key: /certs/server.key
 
 token:
   service: "Docker registry"

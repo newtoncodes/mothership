@@ -20,6 +20,7 @@ services:
         networks:
             - mothership
         volumes:
+            - /etc/mothership/certs:/certs:ro
             - registry_config:/etc/docker/registry:ro
             - registry_data:/var/lib/registry
         deploy:
@@ -35,6 +36,7 @@ services:
         networks:
             - mothership
         volumes:
+            - /etc/mothership/certs:/certs:ro
             - registry_auth_config:/config:ro
             - registry_auth_log:/logs:rw
         command:  --v=2 --alsologtostderr /config/auth.simple.yml
