@@ -23,12 +23,6 @@ olcAccess: to attrs=userPassword,shadowLastChange by self write by dn=\"cn=admin
 olcAccess: to * by self write by dn="cn=admin,dc=ldap,dc=newton,dc=codes" write by * none
 " > /tmp/tmp-change.ldif
 
-docker cp ldap_data:tmp-change.ldif
-
-echo "File copied"
-
-exit 0;
-
 docker run --privileged --rm -d -p 8881:80 -p 8882:443 \
     -e "LDAP_LOG_LEVEL=256" \
     -e "LDAP_ORGANISATION=$domain" \
@@ -58,6 +52,9 @@ osixia/openldap:1.1.11
 
 id=$(docker ps | grep iredmail_tmp | awk '{print $1;}')
 
+docker cp /tmp/tmp-change.ldif ${id}:/tmp-change.ldif
+
+echo "File copied"
 echo "Tmp id: $id"
 
 docker exec -it ${id} ldapmodify -Y EXTERNAL -H ldapi:/// -f /tmp/t2.ldif
