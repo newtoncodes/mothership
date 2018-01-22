@@ -31,9 +31,15 @@ install() {
 
     local dir=$(cd $(dirname ${BASH_SOURCE[0]}) && pwd)
     local password="$2"
+    local domain2=
 
     echo "Domain: "
     read domain;
+
+    if [ "$3" = "yes" ]; then
+        echo "Secondary domain: "
+        read domain2;
+    fi
 
     echo "Public (yes/no; default: no): "
     read public;
@@ -55,6 +61,7 @@ install() {
 
     cp -f ${dir}/../apps/${1}/stack.yml "/etc/mothership/apps/$1.yml"
     sed -i "s/{{DOMAIN}}/$domain/" "/etc/mothership/apps/$1.yml"
+    sed -i "s/{{DOMAIN2}}/$domain2/" "/etc/mothership/apps/$1.yml"
     sed -i "s/{{PASSWORD}}/$password/" "/etc/mothership/apps/$1.yml"
 
     #

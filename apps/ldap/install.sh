@@ -5,7 +5,9 @@ source ${dir}/../../src/lib.sh
 
 set -e
 
-install ldap
+install ldap foo yes
+
+exit 0;
 
 echo "LDAP domain: $domain"
 
@@ -17,47 +19,6 @@ read ldapUsersDn;
 
 echo "LDAP search dn: "
 read ldapSearchDn;
-
-ldapSearchPassword=$(pwgen -1 32)
-
-docker run --rm -it -d \
-    -e "LDAP_ORG=$org" \
-    -e "LDAP_DOMAIN=$domain" \
-    -e "LDAP_HOST=ldap" \
-    -e "LDAP_PORT=389" \
-    -e "LDAP_USERS_DN=$ldapUsersDn" \
-    -e "LDAP_SEARCH_DN=$ldapSearchDn" \
-    -e "LDAP_SEARCH_PASSWORD=$ldapSearchPassword" \
-    -v ldap_admin:/var/lib/ldap-account-manager \
-    --name=ldap_admin_tmp \
-newtoncodes/ldap-account-manager:5.2
-
-id=$(docker ps | grep ldap_admin_tmp | awk '{print $1;}')
-
-set +e
-echo "Admin first start in progress..."
-ready=
-
-for i in {30..0}; do
-    sleep 10
-
-    if [ "$ready" != "" ]; then break; fi
-
-    ready=$(docker logs ${id} 2> /dev/null | grep "/usr/sbin/apache2 -D FOREGROUND")
-done
-
-if [ "$i" = 0 ]; then
-    docker stop ${id} > /dev/null
-    echo >&2 "Admin init process failed."
-    exit 1
-fi
-
-echo "Admin started ok."
-
-docker stop ${id} > /dev/null
-
-
-exit 0;
 
 docker volume create ldap_certs > /dev/null
 docker volume create ldap_config > /dev/null
@@ -78,6 +39,7 @@ olcAccess: to * by self write by dn="cn=admin,dc=ldap,dc=newton,dc=codes" write 
 
 passwordAdmin=$(pwgen -1 32)
 passwordConfig=$(pwgen -1 32)
+ldapSearchPassword=$(pwgen -1 32)
 
 docker run --rm -it -d \
     -e "LDAP_LOG_LEVEL=256" \
@@ -140,7 +102,46 @@ docker exec -it ${id} ldapsearch -Y EXTERNAL -H ldapi:/// -b cn=config 'olcDatab
 
 docker stop ${id} > /dev/null
 
+#################
+
+docker run --rm -it -d \
+    -e "LDAP_ORG=$org" \
+    -e "LDAP_DOMAIN=$domain" \
+    -e "LDAP_HOST=ldap" \
+    -e "LDAP_PORT=389" \
+    -e "LDAP_USERS_DN=$ldapUsersDn" \
+    -e "LDAP_SEARCH_DN=$ldapSearchDn" \
+    -e "LDAP_SEARCH_PASSWORD=$ldapSearchPassword" \
+    -v ldap_admin:/var/lib/ldap-account-manager \
+    --name=ldap_admin_tmp \
+newtoncodes/ldap-account-manager:5.2
+
+id=$(docker ps | grep ldap_admin_tmp | awk '{print $1;}')
+
+set +e
+echo "Admin first start in progress..."
+ready=
+
+for i in {30..0}; do
+    sleep 10
+
+    if [ "$ready" != "" ]; then break; fi
+
+    ready=$(docker logs ${id} 2> /dev/null | grep "/usr/sbin/apache2 -D FOREGROUND")
+done
+
+if [ "$i" = 0 ]; then
+    docker stop ${id} > /dev/null
+    echo >&2 "Admin init process failed."
+    exit 1
+fi
+
+echo "Admin started ok."
+
+docker stop ${id} > /dev/null
+
 echo ""
 echo "Admin: $passwordAdmin"
 echo "Config: $passwordConfig"
+echo "Search dn password: $ldapSearchPassword"
 echo ""
