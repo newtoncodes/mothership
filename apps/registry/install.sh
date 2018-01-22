@@ -7,10 +7,10 @@ set -e
 
 install registry
 
-docker volume create registry_data > /dev/null
-docker volume create registry_config > /dev/null
-docker volume create registry_auth_config > /dev/null
-docker volume create registry_auth_log > /dev/null
+#docker volume create registry_data > /dev/null
+#docker volume create registry_config > /dev/null
+#docker volume create registry_auth_config > /dev/null
+#docker volume create registry_auth_log > /dev/null
 
 mv ${dir}/registry.yml /var/lib/docker/volumes/registry_config/_data/config.yml
 mv ${dir}/auth.ldap.yml /var/lib/docker/volumes/registry_auth_config/_data/auth.ldap.yml
