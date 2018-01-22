@@ -54,10 +54,35 @@ docker run --rm -it -d \
     -e "KEEP_EXISTING_CONFIG=false" \
     -e "LDAP_REMOVE_CONFIG_AFTER_SETUP=true" \
     -e "LDAP_SSL_HELPER_PREFIX=ldap" \
+    -v ldap_config:/etc/ldap/slapd.d \
+    -v ldap_data:/var/lib/ldap \
+    -v ldap_certs:/container/service/slapd/assets/certs \
     --name=ldap_tmp \
 osixia/openldap:1.1.11
 
 id=$(docker ps | grep ldap_tmp | awk '{print $1;}')
+
+set +e
+echo "LDAP first start in progress..."
+ready=
+
+for i in {30..0}; do
+    sleep 10
+
+    if [ "$ready" != "" ]; then break; fi
+
+    ready=$(docker logs ${id} 2> /dev/null | grep "slapd starting")
+done
+
+if [ "$i" = 0 ]; then
+    docker stop ${id} > /dev/null
+    echo >&2 "LDAP init process failed."
+    exit 1
+fi
+
+echo "LDAP started ok."
+
+sleep 5;
 
 docker cp /tmp/tmp-change.ldif ldap_tmp:/tmp-change.ldif
 
