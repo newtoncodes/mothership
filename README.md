@@ -8,3 +8,6 @@ Configurations for:
 * BookStack
 * Xwiki
 * Iredmail
+
+
+TODO: new version checker for all apps.

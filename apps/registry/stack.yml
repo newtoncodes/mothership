@@ -16,7 +16,7 @@ networks:
 
 services:
     registry:
-        image: registry:2
+        image: newtoncodes/registry:2.6
         networks:
             - mothership
         volumes:
