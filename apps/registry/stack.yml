@@ -30,7 +30,7 @@ services:
                     - node.role == manager
 
     registry_auth:
-        image: cesanta/docker_auth:1.3
+        image: newtoncodes/registry-auth:1.3
         networks:
             - mothership
         volumes:
