@@ -14,7 +14,7 @@ networks:
 
 services:
     iredmail:
-        image: newtoncodes/iredmail:0.9.7
+        image: newtoncodes/iredmail:0.9.8
         ports:
             - 25:25
             - 587:587

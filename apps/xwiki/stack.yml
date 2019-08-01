@@ -25,7 +25,7 @@ services:
                     - node.role == manager
 
     xwiki:
-        image: newtoncodes/xwiki:9.11
+        image: newtoncodes/xwiki:11.6
         networks:
             - xwiki
             - mothership

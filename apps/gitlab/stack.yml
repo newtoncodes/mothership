@@ -14,7 +14,7 @@ networks:
 
 services:
     gitlab:
-        image: newtoncodes/gitlab:10.3
+        image: newtoncodes/gitlab:12.1
         networks:
             - mothership
         volumes:

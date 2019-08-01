@@ -12,7 +12,7 @@ networks:
 
 services:
     youtrack:
-        image: newtoncodes/youtrack:2017.4
+        image: newtoncodes/youtrack:2019.2
         networks:
             - mothership
         volumes:
